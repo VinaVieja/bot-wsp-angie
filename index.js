@@ -1,5 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const http = require('http');
 
 const client = new Client({
     authStrategy: new LocalAuth(),
@@ -42,7 +43,7 @@ client.on('message', async (msg) => {
     switch (user.step) {
         case 0:
             await msg.reply(
-                `👋 *Bienvenido*\nPuedes participar desde el *01 al 31 de agosto del 2025*\n\nPor favor lee los términos y condiciones aquí:\nhttps://molipromo.pe/tyc\n\n*Selecciona una opción:*\n\n1️⃣ Estoy de acuerdo\n2️⃣ No estoy de acuerdo`
+                `👋 *Bienvenido*\nPuedes participar desde el *01 al 30 de agosto del 2025*\n\nPor favor lee los términos y condiciones aquí:\nhttps://molipromo.pe/tyc\n\n*Selecciona una opción:*\n\n1️⃣ Estoy de acuerdo\n2️⃣ No estoy de acuerdo`
             );
             user.step = 1;
             break;
@@ -111,3 +112,14 @@ client.on('message', async (msg) => {
 });
 
 client.initialize();
+
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot de WhatsApp funcionando');
+});
+
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor HTTP escuchando en puerto ${PORT}`);
+});
